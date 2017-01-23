@@ -9,40 +9,23 @@
  */
  
 /*
- traverse to left most, find its parent, rotate three nodes
- move up same
+ dfs
 */
 public class Solution {
     public TreeNode upsideDownBinaryTree(TreeNode root) {
-        if (root == null || root.left == null) return root;
-    
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        //move left to the bottom
-        while (root.left!=null){
-            stack.offerLast(root);
-            root = root.left;
+        if (root == null){
+            return null;
         }
-        TreeNode current = stack.pollLast();
         
-        TreeNode newRoot = rotateNodes(current);
-        TreeNode newParent = newRoot;
-        while (!stack.isEmpty()){
-            current = stack.pollLast();
-            // System.out.println(current.val);
-            newParent.right = rotateNodes(current);
-            newParent = newParent.right;
+        TreeNode left = root.left, right = root.right, parent = root;
+        if (left != null){
+            TreeNode ret = upsideDownBinaryTree(left);
+            left.left = right;
+            left.right = parent;
+            root.left = null;
+            root.right  = null;
+            return ret;    
         }
-        return newRoot;
-        
-    }
-    
-    public TreeNode rotateNodes(TreeNode parent){
-        TreeNode newParent = new TreeNode(parent.left.val);
-        newParent.left = parent.right;
-        newParent.right = parent;
-        parent.left = null;
-        parent.right = null;
-        
-        return newParent;
+        return root;
     }
 }
