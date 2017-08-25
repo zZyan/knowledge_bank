@@ -1,0 +1,31 @@
+# key: identify the all zero rows or columns, multiple the rest as usual 
+# where row of A is zero -> easy, but column of B -> zip() a build in function 
+# implementation for multiplication: use map(function, iterable_to_operate_on)
+
+class Solution(object):
+    def multiply(self, A, B):
+        """
+        :type A: List[List[int]]
+        :type B: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        zB = zip(*B)
+        n = len(B)
+        
+        res = []
+        for row in A:
+            if not any(row):
+                res.append([0]*n)
+                continue
+            else:
+
+                res.append([sum(map(lambda(x,y): x*y, zip(row,col))) if any(col) 
+                            else 0 for col in zB])    
+        return res
+            
+
+
+        
+#         res = [[0] * n  if col == 0 then [0] * n 
+#                else [map((lamda(x,y): x*y), (col, row)) for row in A] 
+#                for col in B]
