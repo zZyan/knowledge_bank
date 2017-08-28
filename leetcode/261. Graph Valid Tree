@@ -1,0 +1,78 @@
+# identify cycles 
+#union find 
+class Solution(object):
+    def validTree(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: bool
+        """
+        
+        # union find
+        # key is to find the root node
+        
+        union = [i for i in range(n)]
+        
+        if n != len(edges)+1:
+            return False
+        
+        for e in edges:
+            u1 = e[0]
+            u2 = e[1]
+            while union[u1] != u1:
+                u1 = union[u1]
+            while union[u2] != u2:
+                u2 = union[u2]
+            
+            if u1 != u2:
+                union[u2] = u1
+            else:
+                return False
+                
+        return True
+        
+
+
+# bfs
+class Solution(object):
+    def validTree(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: bool
+        """
+        
+        if n < 2:
+            return True
+        
+        if not edges or len(edges) == 0:
+            return False
+        
+        graph = collections.defaultdict(set)
+        
+        for e in edges:
+            graph[e[0]].add(e[1])
+            graph[e[1]].add(e[0])
+        
+
+        # bfs 
+        q = collections.deque([0])
+        visited = [False] * n
+        count = 0
+        
+        while q:
+            curr = q.popleft()
+            count += 1
+            for p in graph[curr]:
+                if visited[p]:
+                    return False
+                
+                visited[p] = True
+                graph[p].remove(curr)
+                q.append(p)
+
+        
+        return count == n
+            
+        
+    
