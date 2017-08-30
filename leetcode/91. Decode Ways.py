@@ -29,5 +29,3 @@ class Solution(object):
         
         print dp
         return dp[-1]
-            
-        
